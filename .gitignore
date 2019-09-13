@@ -5,7 +5,13 @@
 *.log
 
 # IntelliJ Files
-/.idea
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# maven
+/target
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
