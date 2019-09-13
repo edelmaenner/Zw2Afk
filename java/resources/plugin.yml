@@ -1,0 +1,35 @@
+name: Zw2Afk
+version: 2.0.0
+description: Damit kann man afk gehen oder wiederkommen
+author: Zweistein2
+
+softdepend: [SuperVanish]
+
+main: main.Zw2Afk
+
+commands:
+  afk:
+    description: Setzt dich afk
+    usage: Nutze /<command> [Nachricht] um den Befehl richtig zu verwenden
+    permission: Zw2Afk.afk
+    permission-message: Du hast keine Berechtigung /<permission>
+  re:
+    description: Setzt dich wieder in den Normalzustand
+    usage: Nutze /<command> um den Befehl richtig zu verwenden
+    permission: Zw2Afk.re
+    permission-message: Du hast keine Berechtigung /<permission>
+  reload:
+    description: Lädt die Config neu
+    usage: Nutze /<command> um den Befehl richtig zu verwenden
+    permission: Zw2Afk.reload
+    permission-message: Du hast keine Berechtigung /<permission>
+permissions:
+  Zw2Afk.afk:
+       description: weggehen
+       default: true
+  Zw2Afk.re:
+       description: wiederkommen
+       default: true
+  Zw2Afk.reload:
+    description: Config neuladen
+    default: false
