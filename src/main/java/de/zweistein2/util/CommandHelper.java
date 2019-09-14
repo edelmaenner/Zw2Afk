@@ -118,22 +118,8 @@ public class CommandHelper
             {
                 scheduler.cancelTask(taskList.get(sendingPlayer));
             }
-            if(args.length == 1)
-            {
-                instance.getServer()
-                        .broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk: " + args[0]);
-            } else if(args.length > 1)
-            {
-                final StringBuilder line1 = new StringBuilder();
-                for(final String arg : args)
-                {
-                    line1.append(arg).append(" ");
-                }
-                instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk: " + line1);
-            } else
-            {
-                instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk");
-            }
+            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + "ist afk" + 
+                (args.length==0? "" : (": " + String.join(" ", args))));
             afkList.add(sendingPlayer.getUniqueId());
             sendingPlayer.setPlayerListName("§7" + sender.getName());
             timeList.put(sendingPlayer, sendingPlayer.getStatistic(Statistic.PLAY_ONE_MINUTE));
