@@ -118,7 +118,7 @@ public class CommandHelper
             {
                 scheduler.cancelTask(taskList.get(sendingPlayer));
             }
-            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + "ist afk" + 
+            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk" + 
                 (args.length==0? "" : (": " + String.join(" ", args))));
             afkList.add(sendingPlayer.getUniqueId());
             sendingPlayer.setPlayerListName("§7" + sender.getName());
