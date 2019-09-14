@@ -1,4 +1,4 @@
-package de.zweistein2;
+package de.zweistein2.plugins.zw2afk;
 
 import de.myzelyam.api.vanish.PlayerHideEvent;
 import org.bukkit.Bukkit;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static de.zweistein2.util.CommandHelper.*;
+import static de.zweistein2.plugins.zw2afk.util.CommandHelper.*;
 
 public class Zw2Afk extends JavaPlugin implements Listener
 {

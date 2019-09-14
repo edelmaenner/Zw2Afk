@@ -1,12 +1,12 @@
-package de.zweistein2.util;
+package de.zweistein2.plugins.zw2afk.util;
 
+import de.zweistein2.plugins.zw2afk.Zw2Afk;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
-import de.zweistein2.Zw2Afk;
 
 import java.util.List;
 import java.util.Map;
@@ -34,11 +34,12 @@ public class CommandHelper
 
         final Player sendingPlayer = (Player) sender;
 
-        if(sendingPlayer.hasPermission("Zw2Afk.afk"))
+        if(sendingPlayer.hasPermission("zw2afk.afk"))
         {
             return setPlayerAfkAfterCommand(sender, args, sendingPlayer, scheduler, afkList, taskList, timeList,
                                             instance);
-        } else {
+        } else
+        {
             sendingPlayer.sendMessage(KEINE_BERECHTIGUNG);
         }
 
@@ -58,10 +59,11 @@ public class CommandHelper
                 return true;
             }
             final Player sendingPlayer = (Player) sender;
-            if(sendingPlayer.hasPermission("Zw2Afk.re"))
+            if(sendingPlayer.hasPermission("zw2afk.re"))
             {
                 return setPlayerBackAfterCommand(sendingPlayer, scheduler, afkList, taskList, timeList, instance);
-            } else {
+            } else
+            {
                 sendingPlayer.sendMessage(KEINE_BERECHTIGUNG);
             }
         }
@@ -71,13 +73,15 @@ public class CommandHelper
 
     public static boolean handleReloadCommand(final CommandSender sender, final Zw2Afk instance)
     {
-        if((sender instanceof Player && sender.hasPermission("Zw2Afk.reload")) || (sender instanceof ConsoleCommandSender))
+        if((sender instanceof Player && sender.hasPermission("zw2afk.reload")) ||
+           (sender instanceof ConsoleCommandSender))
         {
             instance.reloadConfig();
             instance.getLogger().info("Die Config wurde neu geladen!");
             sender.sendMessage("Die Config wurde neu geladen!");
             return true;
-        } else {
+        } else
+        {
             sender.sendMessage(KEINE_BERECHTIGUNG);
         }
 
@@ -118,8 +122,8 @@ public class CommandHelper
             {
                 scheduler.cancelTask(taskList.get(sendingPlayer));
             }
-            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk" + 
-                (args.length==0? "" : (": " + String.join(" ", args))));
+            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk" +
+                                                  (args.length == 0 ? "" : (": " + String.join(" ", args))));
             afkList.add(sendingPlayer.getUniqueId());
             sendingPlayer.setPlayerListName("§7" + sender.getName());
             timeList.put(sendingPlayer, sendingPlayer.getStatistic(Statistic.PLAY_ONE_MINUTE));

@@ -1,12 +1,12 @@
 name: Zw2Afk
-version: 2.0.0
+version: 2.0.1
 description: Damit kann man afk gehen oder wiederkommen
 api-version: "1.14"
 author: Zweistein2
 
 softdepend: [SuperVanish]
 
-main: de.zweistein2.Zw2Afk
+main: de.zweistein2.plugins.zw2afk.Zw2Afk
 
 commands:
   afk:

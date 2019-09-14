@@ -1,8 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.zweistein2.plugins</groupId>
-    <artifactId>Zw2Afk</artifactId>
-    <version>2.0.0</version>
+    <artifactId>zw2afk</artifactId>
+    <version>2.0.1</version>
+    <packaging>jar</packaging>
 
     <repositories>
         <repository>
@@ -16,6 +17,7 @@
     </repositories>
 
     <build>
+        <finalName>Zw2Afk-${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
