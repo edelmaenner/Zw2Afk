@@ -2,13 +2,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.zweistein2.plugins</groupId>
     <artifactId>zw2afk</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <packaging>jar</packaging>
 
     <repositories>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>pex-repo</id>
+            <url>http://maven.elmakers.com/repository/</url>
         </repository>
         <repository>
             <id>cubekrowd-repo</id>
@@ -37,6 +41,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.14.4-R0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.tehkode</groupId>
+            <artifactId>PermissionsEx</artifactId>
+            <version>1.23</version>
             <type>jar</type>
             <scope>provided</scope>
         </dependency>

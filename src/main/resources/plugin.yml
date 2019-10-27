@@ -4,6 +4,7 @@ description: Damit kann man afk gehen oder wiederkommen
 api-version: "1.14"
 author: Zweistein2
 
+depend: [PermissionsEx]
 softdepend: [SuperVanish]
 
 main: de.zweistein2.plugins.zw2afk.Zw2Afk

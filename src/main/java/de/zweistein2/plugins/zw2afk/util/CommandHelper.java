@@ -15,7 +15,10 @@ import java.util.UUID;
 public class CommandHelper
 {
 
-    public static final String KEINE_BERECHTIGUNG = "Du hast keine Berechtigung um diesen Befehl zu benutzen";
+    private static final String KEINE_BERECHTIGUNG = "Du hast keine Berechtigung um diesen Befehl zu benutzen";
+    private static final long TIME_TILL_PLAYER_IS_IGNORED_BY_SLEEP_CHECK = 1200L;
+    private static final long TIME_TILL_PLAYER_IS_DECLARED_AFK = 18000L;
+    private static final String COLOR_CODECS = "&((?i)[0-9a-fk-or])";
 
     private CommandHelper()
     {
@@ -36,7 +39,7 @@ public class CommandHelper
 
         if(sendingPlayer.hasPermission("zw2afk.afk"))
         {
-            return setPlayerAfkAfterCommand(sender, args, sendingPlayer, scheduler, afkList, taskList, timeList,
+            return setPlayerAfkAfterCommand(args, sendingPlayer, scheduler, afkList, taskList, timeList,
                                             instance);
         } else
         {
@@ -100,7 +103,7 @@ public class CommandHelper
         {
             afkList.remove(sendingPlayer.getUniqueId());
             instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist wieder da");
-            sendingPlayer.setPlayerListName("§f" + sendingPlayer.getName());
+            sendingPlayer.setPlayerListName(PermissionsExHelper.getPlayerListName(sendingPlayer).replaceAll(COLOR_CODECS, "§$1"));
             sendingPlayer.setStatistic(Statistic.PLAY_ONE_MINUTE, timeList.get(sendingPlayer));
             sendingPlayer.setSleepingIgnored(false);
         } else
@@ -111,8 +114,26 @@ public class CommandHelper
         return true;
     }
 
-    private static boolean setPlayerAfkAfterCommand(final CommandSender sender, final String[] args,
-                                                    final Player sendingPlayer, final BukkitScheduler scheduler,
+    public static void setPlayerBack(final Player sendingPlayer, final BukkitScheduler scheduler,
+                                         final List<UUID> afkList, final Map<Player, Integer> taskList,
+                                         final Map<Player, Integer> timeList, final Zw2Afk instance)
+    {
+        if(!taskList.isEmpty())
+        {
+            scheduler.cancelTask(taskList.get(sendingPlayer));
+        }
+        if(afkList.contains(sendingPlayer.getUniqueId()))
+        {
+            afkList.remove(sendingPlayer.getUniqueId());
+            instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist wieder da");
+            sendingPlayer.setPlayerListName(PermissionsExHelper.getPlayerListName(sendingPlayer).replaceAll(
+                    COLOR_CODECS, "§$1"));
+            sendingPlayer.setStatistic(Statistic.PLAY_ONE_MINUTE, timeList.get(sendingPlayer));
+            sendingPlayer.setSleepingIgnored(false);
+        }
+    }
+
+    private static boolean setPlayerAfkAfterCommand(final String[] args, final Player sendingPlayer, final BukkitScheduler scheduler,
                                                     final List<UUID> afkList, final Map<Player, Integer> taskList,
                                                     final Map<Player, Integer> timeList, final Zw2Afk instance)
     {
@@ -125,10 +146,11 @@ public class CommandHelper
             instance.getServer().broadcastMessage(ChatColor.GOLD + sendingPlayer.getName() + " ist afk" +
                                                   (args.length == 0 ? "" : (": " + String.join(" ", args))));
             afkList.add(sendingPlayer.getUniqueId());
-            sendingPlayer.setPlayerListName("§7" + sender.getName());
+            sendingPlayer.setPlayerListName("§7" + PermissionsExHelper.getPlayerListName(sendingPlayer).replaceAll(
+                    COLOR_CODECS, ""));
             timeList.put(sendingPlayer, sendingPlayer.getStatistic(Statistic.PLAY_ONE_MINUTE));
             taskList.put(sendingPlayer, scheduler
-                    .scheduleSyncDelayedTask(instance, () -> sendingPlayer.setSleepingIgnored(true), 1200L));
+                    .scheduleSyncDelayedTask(instance, () -> sendingPlayer.setSleepingIgnored(true), TIME_TILL_PLAYER_IS_IGNORED_BY_SLEEP_CHECK));
         } else
         {
             sendingPlayer.sendMessage(ChatColor.RED + "Du bist schon afk!");
@@ -137,9 +159,9 @@ public class CommandHelper
         return true;
     }
 
-    public static void setPlayerBack(final Player kickedPlayer, final BukkitScheduler scheduler,
-                                     final List<UUID> afkList, final Map<Player, Integer> taskList,
-                                     final Map<Player, Integer> timeList)
+    public static void setPlayerBackAfterLeaveOrKick(final Player kickedPlayer, final BukkitScheduler scheduler,
+                                                     final List<UUID> afkList, final Map<Player, Integer> taskList,
+                                                     final Map<Player, Integer> timeList)
     {
         if(!taskList.isEmpty())
         {
@@ -165,10 +187,10 @@ public class CommandHelper
             {
                 instance.getServer().broadcastMessage(ChatColor.GOLD + player.getName() + " ist afk");
                 afkList.add(player.getUniqueId());
-                player.setPlayerListName("§7" + player.getName());
+                player.setPlayerListName("§7" + PermissionsExHelper.getPlayerListName(player).replaceAll(COLOR_CODECS, ""));
                 timeList.put(player, player.getStatistic(Statistic.PLAY_ONE_MINUTE));
                 player.setSleepingIgnored(true);
             }
-        }, 18000L));
+        }, TIME_TILL_PLAYER_IS_DECLARED_AFK));
     }
 }

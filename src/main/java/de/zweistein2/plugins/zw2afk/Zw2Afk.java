@@ -1,8 +1,8 @@
 package de.zweistein2.plugins.zw2afk;
 
 import de.myzelyam.api.vanish.PlayerHideEvent;
+import de.zweistein2.plugins.zw2afk.util.PermissionsExHelper;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,6 +25,8 @@ public class Zw2Afk extends JavaPlugin implements Listener
     private static final HashMap<Player, Long> LAST_ACTIVE = new HashMap<>();
     private static final HashMap<Player, Integer> TASK_LIST = new HashMap<>();
     private static final HashMap<Player, Integer> TIME_LIST = new HashMap<>();
+    private static final double MOVEMENT_DISTANCE = 0.2;
+    private static final long TIME_TILL_PLAYER_IS_CHECKED_AFK = 200L;
     private final BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
     private Player player;
 
@@ -82,25 +84,25 @@ public class Zw2Afk extends JavaPlugin implements Listener
                     player = getServer().getPlayer(AFK_LIST.get(i));
                     if(player != null)
                     {
-                        player.setPlayerListName("§7" + player.getName());
+                        player.setPlayerListName("§7" + PermissionsExHelper.getPlayerListName(player).replaceAll("&((?i)[0-9a-fk-or])", ""));
                     }
                 }
             }
-        }, 200L);
+        }, TIME_TILL_PLAYER_IS_CHECKED_AFK);
     }
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event)
     {
         final Player leavingPlayer = event.getPlayer();
-        setPlayerBack(leavingPlayer, scheduler, AFK_LIST, TASK_LIST, TIME_LIST);
+        setPlayerBackAfterLeaveOrKick(leavingPlayer, scheduler, AFK_LIST, TASK_LIST, TIME_LIST);
     }
 
     @EventHandler
     public void onPlayerKick(final PlayerKickEvent event)
     {
         final Player kickedPlayer = event.getPlayer();
-        setPlayerBack(kickedPlayer, scheduler, AFK_LIST, TASK_LIST, TIME_LIST);
+        setPlayerBackAfterLeaveOrKick(kickedPlayer, scheduler, AFK_LIST, TASK_LIST, TIME_LIST);
     }
 
     @EventHandler
@@ -114,17 +116,14 @@ public class Zw2Afk extends JavaPlugin implements Listener
 
         final Location from = event.getFrom();
         final Location to = event.getTo();
+
         if(!AFK_LIST.contains(movingPlayer.getUniqueId()))
         {
             setPlayerAfk(movingPlayer, scheduler, AFK_LIST, LAST_ACTIVE, TASK_LIST, TIME_LIST, this);
         }
-        if(AFK_LIST.contains(movingPlayer.getUniqueId()) && to != null && to.distance(from) > 0.2)
-        {
-            AFK_LIST.remove(movingPlayer.getUniqueId());
-            this.getServer().broadcastMessage(ChatColor.GOLD + movingPlayer.getName() + " ist wieder da");
-            movingPlayer.setPlayerListName("§f" + movingPlayer.getName());
-            movingPlayer.setStatistic(org.bukkit.Statistic.PLAY_ONE_MINUTE, TIME_LIST.get(movingPlayer));
-            movingPlayer.setSleepingIgnored(false);
+
+        if(to != null && to.distance(from) > MOVEMENT_DISTANCE) {
+            setPlayerBack(movingPlayer, scheduler, AFK_LIST, TASK_LIST, TIME_LIST, this);
         }
     }
 
