@@ -1,11 +1,10 @@
 name: Zw2Afk
-version: 2.0.1
+version: 2.0.3
 description: Damit kann man afk gehen oder wiederkommen
-api-version: "1.14"
+api-version: "1.20"
 author: Zweistein2
 
-depend: [PermissionsEx]
-softdepend: [SuperVanish]
+softdepend: [DiscordSRV, PermissionsEx]
 
 main: de.zweistein2.plugins.zw2afk.Zw2Afk
 
@@ -16,16 +15,3 @@ commands:
   re:
     description: Setzt dich wieder in den Normalzustand
     usage: Nutze /<command> um den Befehl richtig zu verwenden
-  reload:
-    description: Lädt die Config neu
-    usage: Nutze /<command> um den Befehl richtig zu verwenden
-permissions:
-  Zw2Afk.afk:
-    description: weggehen
-    default: true
-  Zw2Afk.re:
-    description: wiederkommen
-    default: true
-  Zw2Afk.reload:
-    description: Config neuladen
-    default: false
