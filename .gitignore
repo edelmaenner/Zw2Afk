@@ -9,9 +9,10 @@
 *.ipr
 *.iws
 .idea/
+build/
 
-# maven
-/target
+# build tools
+.gradle
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
